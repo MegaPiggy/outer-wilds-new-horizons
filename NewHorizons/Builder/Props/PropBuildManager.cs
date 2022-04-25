@@ -132,5 +132,18 @@ namespace NewHorizons.Builder.Props
                 }
             }
         }
+
+        public static void ReplaceWithPlanetShader(GameObject prefab)
+        {
+            MeshRenderer meshRenderer = prefab.GetComponent<MeshRenderer>();
+            if (meshRenderer != null)
+            {
+                foreach (Material material in meshRenderer.sharedMaterials)
+                {
+                    if (material == null) continue;
+                    material.shader = Body.HeightMapBuilder.PlanetShader;
+                }
+            }
+        }
     }
 }

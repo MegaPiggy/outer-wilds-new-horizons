@@ -15,7 +15,20 @@ namespace NewHorizons.Builder.Body
 {
     static class HeightMapBuilder
     {
-        public static Shader PlanetShader;
+        private static Shader planetShader;
+        public static Shader PlanetShader
+        {
+            get
+            {
+                if (planetShader == null)
+                {
+                    // TODO: fix UVs so we can switch to the default shader
+                    planetShader = Main.ShaderBundle.LoadAsset<Shader>("Assets/Shaders/SphereTextureWrapper.shader");
+                    //planetShader = Shader.Find("Standard"); 
+                }
+                return planetShader;
+            }
+        }
 
         public static void Make(GameObject go, HeightMapModule module, IModBehaviour mod)
         {
@@ -42,10 +55,6 @@ namespace NewHorizons.Builder.Body
 
             cubeSphere.AddComponent<MeshFilter>();
             cubeSphere.GetComponent<MeshFilter>().mesh = mesh;
-
-            // TODO: fix UVs so we can switch to the default shader
-            if (PlanetShader == null) PlanetShader = Main.ShaderBundle.LoadAsset<Shader>("Assets/Shaders/SphereTextureWrapper.shader");
-            //if (PlanetShader == null) PlanetShader = Shader.Find("Standard"); 
 
             var cubeSphereMR = cubeSphere.AddComponent<MeshRenderer>();
             cubeSphereMR.material = new Material(PlanetShader);

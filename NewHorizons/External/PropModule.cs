@@ -36,6 +36,7 @@ namespace NewHorizons.External
             public string objFilePath;
             public string mtlFilePath;
             public string assetBundle;
+            public bool replaceWithPlanetShader;
             public MVector3 position;
             public MVector3 rotation;
             public float scale { get; set; } = 1f;

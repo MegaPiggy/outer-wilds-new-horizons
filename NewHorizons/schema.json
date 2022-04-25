@@ -608,6 +608,11 @@
                 "type": "string",
                 "description": "Relative filepath to an asset-bundle"
               },
+              "replaceWithPlanetShader": {
+                "type": "boolean",
+                "description": "Do we change the object in the asset bundle's shader to the planet shader?",
+                "default": false
+              },
               "objFilePath": {
                 "type": "string",
                 "description": "Relative filepath to the obj file"

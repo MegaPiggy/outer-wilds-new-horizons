@@ -24,6 +24,9 @@ namespace NewHorizons.Builder.Props
             {
                 var prefab = PropBuildManager.LoadPrefab(detail.assetBundle, detail.path, uniqueModName, mod);
 
+                if (detail.replaceWithPlanetShader)
+                    PropBuildManager.ReplaceWithPlanetShader(prefab);
+
                 detailGO = MakeDetail(go, sector, prefab, detail.position, detail.rotation, detail.scale, detail.alignToNormal);
             }
             else if (detail.objFilePath != null)

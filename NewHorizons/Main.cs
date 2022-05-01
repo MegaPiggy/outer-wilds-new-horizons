@@ -41,6 +41,7 @@ namespace NewHorizons
         public static Dictionary<string, NewHorizonsSystem> SystemDict = new Dictionary<string, NewHorizonsSystem>();
         public static Dictionary<string, List<NewHorizonsBody>> BodyDict = new Dictionary<string, List<NewHorizonsBody>>();
         public static Dictionary<string, AssetBundle> AssetBundles = new Dictionary<string, AssetBundle>();
+        public static Dictionary<string, Dictionary<string, GameObject>> AssetBundleObjects = new Dictionary<string, Dictionary<string, GameObject>>();
         public static List<IModBehaviour> MountedAddons = new List<IModBehaviour>();
 
         public static bool IsSystemReady { get; private set; }

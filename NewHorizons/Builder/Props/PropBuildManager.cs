@@ -100,9 +100,17 @@ namespace NewHorizons.Builder.Props
                 return null;
             }
 
+            if (!Main.AssetBundleObjects.ContainsKey(key))
+                Main.AssetBundleObjects.Add(key, new Dictionary<string, GameObject>());
+
             try
             {
-                prefab = bundle.LoadAsset<GameObject>(path);
+                if (Main.AssetBundleObjects[key].ContainsKey(path)) prefab = Main.AssetBundleObjects[key][path];
+                else
+                {
+                    prefab = bundle.LoadAsset<GameObject>(path);
+                    Main.AssetBundleObjects[key].Add(path, prefab);
+                }
                 prefab.SetActive(false);
             }
             catch (Exception e)

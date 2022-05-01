@@ -46,6 +46,7 @@ namespace NewHorizons.Builder.Props
             rigidBody.angularDrag = originalRaft.GetComponent<Rigidbody>().angularDrag;
 
             var kinematicRigidBody = raftObject.AddComponent<KinematicRigidbody>();
+            Logger.Log($"KinematicRigidbody.centerOfMass = (0,0,0) [{body.name}Raft]");
             kinematicRigidBody.centerOfMass = Vector3.zero;
 
             var owRigidBody = raftObject.AddComponent<OWRigidbody>();

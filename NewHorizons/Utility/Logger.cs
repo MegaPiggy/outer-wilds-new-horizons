@@ -8,7 +8,7 @@ namespace NewHorizons.Utility
     public static class Logger
     {
 
-        private static LogType _logLevel = LogType.Error;
+        private static LogType _logLevel = LogType.Todo;
 
         public static void UpdateLogLevel(LogType newLevel)
         {

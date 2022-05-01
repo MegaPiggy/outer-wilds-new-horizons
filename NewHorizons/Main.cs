@@ -79,6 +79,9 @@ namespace NewHorizons
             Logger.LogType logType;
             switch (logLevel)
             {
+                case "Todo":
+                    logType = Logger.LogType.Todo;
+                    break;
                 case "Info":
                     logType = Logger.LogType.Log;
                     break;

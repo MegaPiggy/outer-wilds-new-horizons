@@ -4,8 +4,8 @@
 		"Debug": false,
 		"LogLevel": {
 			"type": "selector",
-			"value": "Critical",
-			"options": ["Info", "Warning", "Critical"],
+			"value": "LogLevel",
+			"options": [ "Todo", "Info", "Warning", "Critical" ],
 			"title": "Log Type"
 		}
 	}

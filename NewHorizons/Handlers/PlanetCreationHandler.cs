@@ -113,6 +113,7 @@ namespace NewHorizons.Handlers
             GameObject existingPlanet = null;
             try
             {
+                Logger.Log("Loading body for " + body.Config.Name);
                 existingPlanet = AstroObjectLocator.GetAstroObject(body.Config.Name).gameObject;
             }
             catch (Exception)
@@ -145,6 +146,7 @@ namespace NewHorizons.Handlers
                 {
                     GameObject planetObject = GenerateBody(body, defaultPrimaryToSun);
                     if (planetObject == null) return false;
+                    Logger.Log("SetActive " + body.Config.Name);
                     planetObject.SetActive(true);
                 }
                 catch (Exception e)
@@ -153,6 +155,7 @@ namespace NewHorizons.Handlers
                     return false;
                 }
             }
+            Logger.Log("Loaded body for " + body.Config.Name);
             return true;
         }
 
@@ -225,45 +228,72 @@ namespace NewHorizons.Handlers
             var ao = (AstroObject)outputTuple.Item1;
             var owRigidBody = (OWRigidbody)outputTuple.Item2;
 
+            Logger.Log($"GravityBuilder [{body.Config.Name}]");
             GravityVolume gv = null;
             if (body.Config.Base.SurfaceGravity != 0)
                 gv = GravityBuilder.Make(go, ao, body.Config);
 
+            Logger.Log($"RFVolumeBuilder [{body.Config.Name}]");
+
             if (body.Config.Base.HasReferenceFrame)
                 RFVolumeBuilder.Make(go, owRigidBody, sphereOfInfluence);
+
+            Logger.Log($"MarkerBuilder [{body.Config.Name}]");
 
             if (body.Config.Base.HasMapMarker)
                 MarkerBuilder.Make(go, body.Config.Name, body.Config);
 
+            Logger.Log($"AmbientLightBuilder [{body.Config.Name}]");
+
             if (body.Config.Base.HasAmbientLight)
                 AmbientLightBuilder.Make(go, sphereOfInfluence);
+
+            Logger.Log($"MakeSector [{body.Config.Name}]");
 
             var sector = MakeSector.Make(go, owRigidBody, sphereOfInfluence * 2f);
             ao._rootSector = sector;
 
+            Logger.Log($"VolumesBuilder [{body.Config.Name}]");
+
             VolumesBuilder.Make(go, body.Config.Base.SurfaceSize, sphereOfInfluence, body.Config);
+
+            Logger.Log($"HeightMapBuilder [{body.Config.Name}]");
 
             if (body.Config.HeightMap != null)
                 HeightMapBuilder.Make(go, body.Config.HeightMap, body.Mod);
 
+            Logger.Log($"ProcGenBuilder [{body.Config.Name}]");
+
             if (body.Config.ProcGen != null)
                 ProcGenBuilder.Make(go, body.Config.ProcGen);
 
+            Logger.Log($"StarBuilder [{body.Config.Name}]");
+
             if (body.Config.Star != null) StarLightController.AddStar(StarBuilder.Make(go, sector, body.Config.Star));
+
+            Logger.Log($"FocalPointBuilder [{body.Config.Name}]");
 
             if (body.Config.FocalPoint != null)
                 FocalPointBuilder.Make(go, ao, body.Config, body.Mod);
+
+            Logger.Log($"SharedGenerateBody [{body.Config.Name}]");
 
             // Do stuff that's shared between generating new planets and updating old ones
             go = SharedGenerateBody(body, go, sector, owRigidBody);
 
             body.Object = go;
 
+            Logger.Log($"UpdatePosition [{body.Config.Name}]");
+
             // Now that we're done move the planet into place
             UpdatePosition(go, body, primaryBody);
 
+            Logger.Log($"InitialMotionBuilder [{body.Config.Name}]");
+
             // Have to do this after setting position
             var initialMotion = InitialMotionBuilder.Make(go, primaryBody, owRigidBody, body.Config.Orbit);
+
+            Logger.Log($"SpawnPointBuilder [{body.Config.Name}]");
 
             // Spawning on other planets is a bit hacky so we do it last
             if (body.Config.Spawn != null)
@@ -272,13 +302,23 @@ namespace NewHorizons.Handlers
                 Main.SystemDict[body.Config.StarSystem].SpawnPoint = SpawnPointBuilder.Make(go, body.Config.Spawn, owRigidBody);
             }
 
+            Logger.Log($"OrbitlineBuilder [{body.Config.Name}]");
+
             if (body.Config.Orbit.ShowOrbitLine && !body.Config.Orbit.IsStatic) OrbitlineBuilder.Make(body.Object, ao, body.Config.Orbit.IsMoon, body.Config);
+
+            Logger.Log($"DetectorBuilder [{body.Config.Name}]");
 
             if (!body.Config.Orbit.IsStatic) DetectorBuilder.Make(go, owRigidBody, primaryBody, ao, body.Config);
 
+            Logger.Log($"AstroObjectLocator [{body.Config.Name}]");
+
             if (ao.GetAstroObjectName() == AstroObject.Name.CustomString) AstroObjectLocator.RegisterCustomAstroObject(ao);
 
+            Logger.Log($"HeavenlyBodyBuilder [{body.Config.Name}]");
+
             HeavenlyBodyBuilder.Make(go, body.Config, sphereOfInfluence, gv, initialMotion);
+
+            Logger.Log($"Planet Created [{body.Config.Name}]");
 
             return go;
         }

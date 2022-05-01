@@ -13,6 +13,7 @@ namespace NewHorizons.Builder.General
     {
         public static Tuple<AstroObject, OWRigidbody> Make(GameObject body, AstroObject primaryBody, IPlanetConfig config)
         {
+            Logger.Log($"Base [{config.Name}]");
             body.AddComponent<ProxyShadowCasterSuperGroup>();
 
             Rigidbody rigidBody = body.AddComponent<Rigidbody>();
@@ -25,7 +26,10 @@ namespace NewHorizons.Builder.General
             rigidBody.collisionDetectionMode = CollisionDetectionMode.Discrete;
 
             KinematicRigidbody kinematicRigidBody = body.AddComponent<KinematicRigidbody>();
+            Logger.Log($"KinematicRigidbody.centerOfMass = (0,0,0) [{config.Name}]");
             kinematicRigidBody.centerOfMass = Vector3.zero;
+
+            Logger.Log($"owRigidBody [{config.Name}]");
 
             OWRigidbody owRigidBody = body.AddComponent<OWRigidbody>();
             owRigidBody.SetValue("_kinematicSimulation", true);
@@ -38,10 +42,16 @@ namespace NewHorizons.Builder.General
             owRigidBody.EnableKinematicSimulation();
             owRigidBody.MakeKinematic();
 
+            Logger.Log($"astroObject [{config.Name}]");
+
             NHAstroObject astroObject = body.AddComponent<NHAstroObject>();
             astroObject.HideDisplayName = !config.Base.HasMapMarker;
 
+            Logger.Log($"KeplerCoordinates [{config.Name}]");
+
             if (config.Orbit != null) astroObject.SetKeplerCoordinatesFromOrbitModule(config.Orbit);
+
+            Logger.Log($"type [{config.Name}]");
 
             var type = AstroObject.Type.Planet;
             if (config.Orbit.IsMoon) type = AstroObject.Type.Moon;
@@ -54,6 +64,8 @@ namespace NewHorizons.Builder.General
             astroObject.SetValue("_customName", config.Name);
             astroObject.SetValue("_primaryBody", primaryBody);
 
+            Logger.Log($"gravitational sphere of influence [{config.Name}]");
+
             // Expand gravitational sphere of influence of the primary to encompass this body if needed
             if (primaryBody?.gameObject?.GetComponent<SphereCollider>() != null && !config.Orbit.IsStatic)
             {
@@ -61,6 +73,8 @@ namespace NewHorizons.Builder.General
                 if (primarySphereOfInfluence.radius < config.Orbit.SemiMajorAxis)
                     primarySphereOfInfluence.radius = config.Orbit.SemiMajorAxis * 1.5f;
             }
+
+            Logger.Log($"IsTidallyLocked [{config.Name}]");
 
             if (config.Orbit.IsTidallyLocked)
             {
@@ -75,14 +89,18 @@ namespace NewHorizons.Builder.General
                 {
                     alignment._localAlignmentAxis = config.Orbit.AlignmentAxis;
                 }
-                
+
             }
+
+            Logger.Log($"CenterOfSolarSystem [{config.Name}]");
 
             if (config.Base.CenterOfSolarSystem)
             {
                 Logger.Log($"Setting center of universe to {config.Name}");
                 Main.Instance.ModHelper.Events.Unity.FireInNUpdates(() => Locator.GetCenterOfTheUniverse()._staticReferenceFrame = owRigidBody, 2);
             }
+
+            Logger.Log($"BaseEnd [{config.Name}]");
 
             return new Tuple<AstroObject, OWRigidbody>(astroObject, owRigidBody);
         }

@@ -40,7 +40,7 @@ Check the ship's log for how to use your warp drive to travel between star syste
 - Remove existing planets
 - Create planets from heightmaps/texturemaps
 - Create stars, comets, asteroid belts, satellites, geysers, cloak fields
-- Binary orbits
+- Binary and Trinary orbits
 - Signalscope signals and custom frequencies
 - Surface scatter: rocks, trees, etc, using in-game models, or custom ones 
 - Black hole / white hole pairs 

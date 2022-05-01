@@ -504,11 +504,15 @@
       "properties": {
         "primary": {
           "type": "string",
-          "description": "The larger of the two bodies in the binary pair."
+          "description": "The larger of the two bodies in the binary pair or the larger of the three bodies in the trinary trio."
         },
         "secondary": {
           "type": "string",
-          "description": "The smaller of the two bodies in the binary pair."
+          "description": "The smaller of the two bodies in the binary pair or the medium-sized of the three bodies in the trinary trio."
+        },
+        "tertiary": {
+          "type": "string",
+          "description": "The smaller of the three bodies in the trinary trio."
         }
       }
     },

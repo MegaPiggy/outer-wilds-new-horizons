@@ -37,7 +37,7 @@ Check the ship's log for how to use your warp drive to travel between star syste
 - Create custom planets from heightmaps/texturemaps
 - Create stars (and supernovae), comets, asteroid belts, satellites, and quantum planets/moons.
 - Add stock planet features to custom ones, such as geysers, cloak fields, meteor-launching volcanoes, rafts, and tornados.
-- Binary orbits
+- Binary and Trinary orbits
 - Signalscope signals and custom frequencies
 - Surface scatter: rocks, trees, etc, using in-game models, or custom ones 
 - Black hole / white hole pairs 

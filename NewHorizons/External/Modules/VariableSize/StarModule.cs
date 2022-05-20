@@ -13,5 +13,6 @@ namespace NewHorizons.External.Modules.VariableSize
         public float SolarLuminosity { get; set; } = 1f;
         public bool HasAtmosphere { get; set; } = true;
         public bool GoSupernova { get; set; } = true;
+        public bool HasStarController { get; set; } = true;
     }
 }

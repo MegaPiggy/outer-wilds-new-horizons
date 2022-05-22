@@ -95,10 +95,13 @@ namespace NewHorizons.Builder.General
             var primaryGV = primary.GetGravityVolume();
             var secondaryGV = secondary.GetGravityVolume();
 
-            if (primaryGV._falloffType != secondaryGV._falloffType)
+            if (primaryGV != null && secondaryGV != null)
             {
-                Logger.LogError($"Binaries must have the same gravity falloff! {primaryGV._falloffType} != {secondaryGV._falloffType}");
-                return;
+                if (primaryGV._falloffType != secondaryGV._falloffType)
+                {
+                    Logger.LogError($"Binaries must have the same gravity falloff! {primaryGV._falloffType} != {secondaryGV._falloffType}");
+                    return;
+                }
             }
 
             var pointForceDetector = point.GetAttachedOWRigidbody().GetAttachedForceDetector();

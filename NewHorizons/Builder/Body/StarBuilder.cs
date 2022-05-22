@@ -226,7 +226,7 @@ namespace NewHorizons.Builder.Body
 
         private static SupernovaEffectController MakeSupernova(GameObject starGO, StarModule starModule)
         {
-            var supernovaGO = GameObject.Find("Sun_Body/Sector_SUN/Effects_SUN/Supernova").InstantiateInactive();
+            var supernovaGO = (GameObject.Find("Sun_Body/Sector_SUN/Effects_SUN/Supernova") ?? Locator.GetSunTransform().Find("Sector_SUN").Find("Effects_SUN").Find("Supernova").gameObject).InstantiateInactive();
             supernovaGO.transform.SetParent(starGO.transform);
             supernovaGO.transform.localPosition = Vector3.zero;
 

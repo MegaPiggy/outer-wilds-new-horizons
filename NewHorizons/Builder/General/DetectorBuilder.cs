@@ -91,14 +91,20 @@ namespace NewHorizons.Builder.General
             var primary = point.Primary;
             var secondary = point.Secondary;
 
-            // Binaries have to use the same gravity exponent
-            var primaryGV = primary.GetGravityVolume();
-            var secondaryGV = secondary.GetGravityVolume();
+            var primaryFP = primary.GetComponent<BinaryFocalPoint>();
+            var secondaryFP = secondary.GetComponent<BinaryFocalPoint>();
 
-            if (primaryGV._falloffType != secondaryGV._falloffType)
+            // Binaries have to use the same gravity exponent
+            var primaryGV = primaryFP != null ? primaryFP.FakeMassBody.GetComponent<AstroObject>().GetGravityVolume() : primary.GetGravityVolume();
+            var secondaryGV = secondaryFP != null ? secondaryFP.FakeMassBody.GetComponent<AstroObject>().GetGravityVolume() : secondary.GetGravityVolume();
+
+            if (primaryGV != null && secondaryGV != null)
             {
-                Logger.LogError($"Binaries must have the same gravity falloff! {primaryGV._falloffType} != {secondaryGV._falloffType}");
-                return;
+                if (primaryGV._falloffType != secondaryGV._falloffType)
+                {
+                    Logger.LogError($"Binaries must have the same gravity falloff! {primaryGV._falloffType} != {secondaryGV._falloffType}");
+                    return;
+                }
             }
 
             var pointForceDetector = point.GetAttachedOWRigidbody().GetAttachedForceDetector();

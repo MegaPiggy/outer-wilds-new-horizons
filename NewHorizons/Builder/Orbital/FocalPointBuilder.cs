@@ -60,6 +60,9 @@ namespace NewHorizons.Builder.Orbital
             fakeMassConfig.Base.soiOverride = 0;
             fakeMassConfig.Base.hasMapMarker = false;
             fakeMassConfig.ReferenceFrame.hideInMap = true;
+            fakeMassConfig.ReferenceFrame.maxTargetDistance = 0;
+            fakeMassConfig.ReferenceFrame.bracketRadius = 0;
+            fakeMassConfig.ReferenceFrame.targetWhenClose = true;
 
             fakeMassConfig.Orbit = new OrbitModule();
             fakeMassConfig.Orbit.CopyPropertiesFrom(config.Orbit);

@@ -59,6 +59,7 @@ namespace NewHorizons.Builder.Orbital
             fakeMassConfig.name = config.name + "_FakeBarycenterMass";
             fakeMassConfig.Base.soiOverride = 0;
             fakeMassConfig.Base.hasMapMarker = false;
+            fakeMassConfig.ReferenceFrame.enabled = false;
             fakeMassConfig.ReferenceFrame.hideInMap = true;
             fakeMassConfig.ReferenceFrame.maxTargetDistance = 0;
             fakeMassConfig.ReferenceFrame.bracketRadius = 0;

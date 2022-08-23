@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
 namespace NewHorizons.External.Modules.VariableSize
@@ -45,5 +45,10 @@ namespace NewHorizons.External.Modules.VariableSize
         /// Should this ring be unlit?
         /// </summary>
         public bool unlit;
+
+        /// <summary>
+        /// Fade rings in/out over time. Optional. Value between 0-1, time is in minutes.
+        /// </summary>
+        public TimeValuePair[] opacity;
     }
 }

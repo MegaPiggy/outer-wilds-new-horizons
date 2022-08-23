@@ -60,6 +60,8 @@ namespace NewHorizons.Builder.Body
             sfv._fluidType = fluidType;
             sfv._density = 5f;
 
+            if (ringGO.TryGetComponent<RingOpacityController>(out var ringOC)) ringOC.SetRingFluidVolume(sfv);
+
             ringVolume.SetActive(true);
 
 
@@ -131,6 +133,13 @@ namespace NewHorizons.Builder.Body
             {
                 var levelController = ringGO.AddComponent<SizeController>();
                 levelController.SetScaleCurve(ring.curve);
+            }
+
+            if (ring.opacity != null)
+            {
+                var ringOC = ringGO.AddComponent<RingOpacityController>();
+                ringOC.SetOpacityCurve(ring.opacity);
+                ringOC.SetMeshRenderer(ringMR);
             }
 
             return ringGO;

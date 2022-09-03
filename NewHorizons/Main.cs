@@ -383,6 +383,10 @@ namespace NewHorizons
                     EyeState.ZoomOut
                 };
 
+                Builder.EyeMapModeBuilder.Make(solarSystemRoot);
+
+                GameObject.Destroy(solarSystemRoot.GetComponent<EyeMapController>());
+
                 if (IsWarpingFromShip && _ship != null)
                 {
                     var eyeShip = GameObject.Instantiate(_ship);

@@ -201,7 +201,6 @@ namespace NewHorizons
                 Logger.LogWarning("Couldn't find planets folder");
             }
 
-
             Instance.ModHelper.Events.Unity.RunWhen(() => EntitlementsManager.IsDlcOwned() != EntitlementsManager.AsyncOwnershipStatus.NotReady, () =>
             {
                 Instance.ModHelper.Events.Unity.FireOnNextUpdate(() => OnSceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single));
@@ -488,10 +487,7 @@ namespace NewHorizons
         {
             try
             {
-                if (_firstLoad)
-                {
-                    MountedAddons.Add(mod);
-                }
+                MountedAddons.SafeAdd(mod);
                 var folder = mod.ModHelper.Manifest.ModFolderPath;
 
                 // Load systems first so that when we load bodies later we can check for missing ones

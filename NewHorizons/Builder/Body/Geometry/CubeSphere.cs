@@ -7,32 +7,41 @@ namespace NewHorizons.Builder.Body.Geometry
     {
         public static Mesh Build(int resolution, Texture2D heightMap, float minHeight, float maxHeight, Vector3 stretch)
         {
-            Mesh mesh = new Mesh();
-            mesh.name = "CubeSphere";
+            string uniqueName = $"{heightMap.name}-{resolution}-{minHeight}-{maxHeight}-{stretch}";
 
-            float max = 1;
-            if (stretch.x > stretch.y && stretch.x > stretch.z)
-                max = stretch.x;
-            else if (stretch.y > stretch.x && stretch.y > stretch.z)
-                max = stretch.y;
-            else if (stretch.z > stretch.x && stretch.z > stretch.y)
-                max = stretch.z;
-            else if (stretch.y == stretch.z && stretch.x > stretch.y)
-                max = stretch.x;
-            else if (stretch.x == stretch.z && stretch.y > stretch.x)
-                max = stretch.y;
-            else if (stretch.x == stretch.y && stretch.z > stretch.x)
-                max = stretch.z;
-            minHeight /= max;
-            maxHeight /= max;
+            Mesh mesh;
 
-            CreateVertices(mesh, resolution, heightMap, minHeight, maxHeight);
-            StretchVertices(mesh, stretch);
-            CreateTriangles(mesh, resolution);
+            if (!MeshUtilities.TryGetCachedMesh(uniqueName, out mesh))
+            {
+                mesh = new Mesh();
+                mesh.name = "CubeSphere";
 
-            mesh.RecalculateNormals();
-            mesh.RecalculateBounds();
-            mesh.RecalculateTangents();
+                float max = 1;
+                if (stretch.x > stretch.y && stretch.x > stretch.z)
+                    max = stretch.x;
+                else if (stretch.y > stretch.x && stretch.y > stretch.z)
+                    max = stretch.y;
+                else if (stretch.z > stretch.x && stretch.z > stretch.y)
+                    max = stretch.z;
+                else if (stretch.y == stretch.z && stretch.x > stretch.y)
+                    max = stretch.x;
+                else if (stretch.x == stretch.z && stretch.y > stretch.x)
+                    max = stretch.y;
+                else if (stretch.x == stretch.y && stretch.z > stretch.x)
+                    max = stretch.z;
+                minHeight /= max;
+                maxHeight /= max;
+
+                CreateVertices(mesh, resolution, heightMap, minHeight, maxHeight);
+                StretchVertices(mesh, stretch);
+                CreateTriangles(mesh, resolution);
+
+                mesh.RecalculateNormals();
+                mesh.RecalculateBounds();
+                mesh.RecalculateTangents();
+
+                MeshUtilities.CacheMesh(uniqueName, mesh);
+            }
 
             return mesh;
         }

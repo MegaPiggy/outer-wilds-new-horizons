@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using NewHorizons.Utility;
 using UnityEngine;
 using Random = UnityEngine.Random;
 namespace NewHorizons.Builder.Body.Geometry
@@ -58,47 +59,56 @@ namespace NewHorizons.Builder.Body.Geometry
 
         public static Mesh Build(int subdivisions, float minHeight, float maxHeight)
         {
-            Mesh mesh = new Mesh();
-            mesh.name = "Icosphere";
+            string uniqueName = $"Icosphere-{subdivisions}-{minHeight}-{maxHeight}";
 
-            if (vertices.Count <= subdivisions) RefineFaces(subdivisions);
+            Mesh mesh;
 
-            var verticesToCopy = vertices[subdivisions];
-
-            Vector3[] newVertices = new Vector3[verticesToCopy.Length];
-            Vector3[] normals = new Vector3[verticesToCopy.Length];
-            Vector2[] uvs = new Vector2[verticesToCopy.Length];
-
-            var randomOffset = new Vector3(Random.Range(0, 10f), Random.Range(0, 10f), Random.Range(0, 10f));
-
-            for (int i = 0; i < verticesToCopy.Length; i++)
+            if (!MeshUtilities.TryGetCachedMesh(uniqueName, out mesh))
             {
-                var v = verticesToCopy[i];
+                mesh = new Mesh();
+                mesh.name = "Icosphere";
 
-                float latitude = Mathf.Repeat(Mathf.Rad2Deg * Mathf.Acos(v.z / Mathf.Sqrt(v.x * v.x + v.y * v.y + v.z * v.z)), 180f);
-                float longitude = Mathf.Repeat(Mathf.Rad2Deg * (v.x > 0 ? Mathf.Atan(v.y / v.x) : Mathf.Atan(v.y / v.x) + Mathf.PI) + 90f, 360f);
+                if (vertices.Count <= subdivisions) RefineFaces(subdivisions);
 
-                float height = Perlin.Noise(v + randomOffset) * (maxHeight - minHeight) + minHeight;
+                var verticesToCopy = vertices[subdivisions];
 
-                newVertices[i] = verticesToCopy[i] * height;
-                normals[i] = v.normalized;
+                Vector3[] newVertices = new Vector3[verticesToCopy.Length];
+                Vector3[] normals = new Vector3[verticesToCopy.Length];
+                Vector2[] uvs = new Vector2[verticesToCopy.Length];
 
-                var x = longitude / 360f;
-                var y = latitude / 180f;
+                var randomOffset = new Vector3(Random.Range(0, 10f), Random.Range(0, 10f), Random.Range(0, 10f));
 
-                uvs[i] = new Vector2(x, y);
+                for (int i = 0; i < verticesToCopy.Length; i++)
+                {
+                    var v = verticesToCopy[i];
+
+                    float latitude = Mathf.Repeat(Mathf.Rad2Deg * Mathf.Acos(v.z / Mathf.Sqrt(v.x * v.x + v.y * v.y + v.z * v.z)), 180f);
+                    float longitude = Mathf.Repeat(Mathf.Rad2Deg * (v.x > 0 ? Mathf.Atan(v.y / v.x) : Mathf.Atan(v.y / v.x) + Mathf.PI) + 90f, 360f);
+
+                    float height = Perlin.Noise(v + randomOffset) * (maxHeight - minHeight) + minHeight;
+
+                    newVertices[i] = verticesToCopy[i] * height;
+                    normals[i] = v.normalized;
+
+                    var x = longitude / 360f;
+                    var y = latitude / 180f;
+
+                    uvs[i] = new Vector2(x, y);
+                }
+
+                // Higher than this and we have to use a different indexFormat
+                if (newVertices.Length > 65535)
+                {
+                    mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
+                }
+
+                mesh.vertices = newVertices;
+                mesh.triangles = triangles[subdivisions];
+                mesh.normals = normals;
+                mesh.uv = uvs;
+
+                MeshUtilities.CacheMesh(uniqueName, mesh);
             }
-
-            // Higher than this and we have to use a different indexFormat
-            if (newVertices.Length > 65535)
-            {
-                mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
-            }
-
-            mesh.vertices = newVertices;
-            mesh.triangles = triangles[subdivisions];
-            mesh.normals = normals;
-            mesh.uv = uvs;
 
             return mesh;
         }

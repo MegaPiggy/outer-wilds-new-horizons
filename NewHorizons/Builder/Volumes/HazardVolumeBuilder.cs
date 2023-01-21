@@ -1,4 +1,5 @@
 using NewHorizons.External.Modules;
+using NewHorizons.Components.Volumes;
 using OWML.Common;
 using OWML.Utils;
 using System;
@@ -58,10 +59,15 @@ namespace NewHorizons.Builder.Volumes
             }
             else if (info.type == VolumesModule.HazardVolumeInfo.HazardType.DARKMATTER)
             {
-                hazardVolume = go.AddComponent<DarkMatterVolume>();
+                var darkMatterVolume = go.AddComponent<SubmersibleDarkMatterVolume>();
+                var detector = go.AddComponent<DynamicFluidDetector>();
+                detector._shape = shape;
+                darkMatterVolume._fluidDetector = detector;
                 var visorFrostEffectVolume = go.AddComponent<VisorFrostEffectVolume>();
                 visorFrostEffectVolume._frostRate = 0.5f;
                 visorFrostEffectVolume._maxFrost = 0.91f;
+                darkMatterVolume._effectVolumes = new EffectVolume[2] { darkMatterVolume, visorFrostEffectVolume };
+                hazardVolume = darkMatterVolume;
             }
             else if (info.type == VolumesModule.HazardVolumeInfo.HazardType.ELECTRICITY)
             {

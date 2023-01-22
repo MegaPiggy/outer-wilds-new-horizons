@@ -169,7 +169,7 @@ namespace NewHorizons
 
         public AudioSignal SpawnSignal(IModBehaviour mod, GameObject root, string audio, string name, string frequency,
             float sourceRadius = 1f, float detectionRadius = 20f, float identificationRadius = 10f, bool insideCloak = false,
-            bool onlyAudibleToScope = true, string reveals = "")
+            bool onlyAudibleToScope = true, string reveals = "", bool restartOnUnpause = false)
         {
             var info = new SignalModule.SignalInfo()
             {
@@ -182,7 +182,8 @@ namespace NewHorizons
                 onlyAudibleToScope = onlyAudibleToScope,
                 position = Vector3.zero,
                 reveals = reveals,
-                sourceRadius = sourceRadius
+                sourceRadius = sourceRadius,
+                restartOnUnpause = restartOnUnpause
             };
 
             return SignalBuilder.Make(root, null, info, mod).GetComponent<AudioSignal>();

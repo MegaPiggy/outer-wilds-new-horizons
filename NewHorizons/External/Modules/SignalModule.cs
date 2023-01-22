@@ -52,6 +52,11 @@ namespace NewHorizons.External.Modules
             public bool insideCloak;
 
             /// <summary>
+            /// Restart the signal when the game is unpaused. Good for syncing signals like the Travelers.
+            /// </summary>
+            public bool restartOnUnpause;
+
+            /// <summary>
             /// The unique ID of the signal.
             /// </summary>
             public string name;

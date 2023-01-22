@@ -1,3 +1,4 @@
+using NewHorizons.Components;
 using NewHorizons.External.Modules;
 using NewHorizons.Utility;
 using OWML.Common;
@@ -190,6 +191,8 @@ namespace NewHorizons.Builder.Props
             sphereShape.radius = info.detectionRadius == 0 ? info.sourceRadius + 30 : info.detectionRadius;
             audioSignalDetectionTrigger._signal = audioSignal;
             audioSignalDetectionTrigger._trigger = owTriggerVolume;
+
+            if (info.restartOnUnpause) signalGO.AddComponent<AudioSignalSyncer>().signal = audioSignal;
 
             signalGO.SetActive(true);
 

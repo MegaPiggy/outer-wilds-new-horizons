@@ -99,7 +99,7 @@ namespace NewHorizons
         /// </summary>
         AudioSignal SpawnSignal(IModBehaviour mod, GameObject root, string audio, string name, string frequency,
             float sourceRadius = 1f, float detectionRadius = 20f, float identificationRadius = 10f, bool insideCloak = false,
-            bool onlyAudibleToScope = true, string reveals = "");
+            bool onlyAudibleToScope = true, string reveals = "", bool restartOnUnpause = false);
 
         /// <summary>
         /// Allows you to spawn character dialogue on a planet. Also returns the RemoteDialogueTrigger if remoteTriggerRadius is specified.

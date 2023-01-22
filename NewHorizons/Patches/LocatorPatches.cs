@@ -1,4 +1,5 @@
 using HarmonyLib;
+using NewHorizons.Components;
 
 namespace NewHorizons.Patches
 {
@@ -68,6 +69,7 @@ namespace NewHorizons.Patches
                 }
                 // Debris uses same custom name because morbius, so let us change that.
                 else if (astroObject.gameObject.name == "SS_Debris_Body") astroObject._customName = "Sun Station Debris";
+                astroObject.gameObject.AddComponent<HideNameInReferenceFrame>();
                 return true;
             }
 
@@ -91,6 +93,9 @@ namespace NewHorizons.Patches
                 case AstroObject.Name.VolcanicMoon:
                     _hollowsLantern = astroObject;
                     return false;
+                case AstroObject.Name.QuantumMoon:
+                    astroObject.gameObject.AddComponent<HideNameInReferenceFrame>();
+                    break;
                 default:
                     break;
             }

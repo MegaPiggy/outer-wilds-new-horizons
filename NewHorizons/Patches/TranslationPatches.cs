@@ -1,4 +1,5 @@
 using HarmonyLib;
+using NewHorizons.Components;
 using NewHorizons.Components.Orbital;
 using NewHorizons.Handlers;
 using System;
@@ -24,7 +25,7 @@ namespace NewHorizons.Patches
 
             __result = string.Empty;
 
-            if (ao is NHAstroObject nhao && nhao.HideDisplayName) return false;
+            if ((ao is NHAstroObject nhao && nhao.HideDisplayName) || ao.GetComponent<HideNameInReferenceFrame>()) return false;
 
             var customName = ao.GetCustomName();
 

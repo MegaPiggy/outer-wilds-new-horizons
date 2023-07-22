@@ -82,6 +82,9 @@ namespace NewHorizons.Builder.Props
             shuttleController._id = id;
             shuttleController._cannon = Locator.GetGravityCannon(id);
 
+            StreamingHandler.SetUpStreaming(shuttleObject, shuttleController._exteriorSector);
+            StreamingHandler.SetUpStreaming(shuttleObject, shuttleController._interiorSector);
+
             GameObject slots = shuttleObject.FindChild("Sector_NomaiShuttleInterior/Interactibles_NomaiShuttleInterior/ControlPanel/Slots");
             GameObject orbObject = _orbPrefab.InstantiateInactive().Rename("InterfaceOrbSmall");
             orbObject.transform.SetParent(slots.transform, false);
@@ -93,6 +96,8 @@ namespace NewHorizons.Builder.Props
             shuttleController._orb._slots = slots.GetComponentsInChildren<NomaiInterfaceSlot>();
 
             StreamingHandler.SetUpStreaming(orbObject, sector);
+            StreamingHandler.SetUpStreaming(orbObject, shuttleController._exteriorSector);
+            StreamingHandler.SetUpStreaming(orbObject, shuttleController._interiorSector);
 
             GameObject bodyObject = _bodyPrefab.InstantiateInactive().Rename("Shuttle_Body");
             bodyObject.transform.SetParent(shuttleObject.transform, false);

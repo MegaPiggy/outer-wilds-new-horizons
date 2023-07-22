@@ -620,7 +620,7 @@ namespace NewHorizons.Builder.Props.TranslatorText
             return arc;
         }
 
-        private static Dictionary<int, NomaiText.NomaiTextData> MakeNomaiTextDict(string xmlPath)
+        public static Dictionary<int, NomaiText.NomaiTextData> MakeNomaiTextDict(string xmlPath)
         {
             var dict = new Dictionary<int, NomaiText.NomaiTextData>();
 
@@ -657,7 +657,7 @@ namespace NewHorizons.Builder.Props.TranslatorText
             return dict;
         }
 
-        private static void AddTranslation(string xmlPath)
+        public static void AddTranslation(string xmlPath)
         {
             XmlDocument xmlDocument = new XmlDocument();
             xmlDocument.LoadXml(xmlPath);

@@ -28,6 +28,6 @@ namespace NewHorizons.External.Modules.Props.Shuttle
         /// <summary>
         /// Will create a modern Nomai computer linked to this gravity cannon.
         /// </summary>
-        public NomaiComputerInfo computer;
+        public NomaiGravityCannonComputerInfo computer;
     }
 }

@@ -1,11 +1,15 @@
+using Epic.OnlineServices.Presence;
 using NewHorizons.Builder.Props.TranslatorText;
 using NewHorizons.External.Modules;
 using NewHorizons.External.Modules.Props;
 using NewHorizons.External.Modules.Props.Shuttle;
+using NewHorizons.External.Modules.TranslatorText;
+using NewHorizons.External.SerializableData;
 using NewHorizons.Handlers;
 using NewHorizons.Utility;
 using NewHorizons.Utility.OWML;
 using OWML.Common;
+using System.IO;
 using UnityEngine;
 
 namespace NewHorizons.Builder.Props
@@ -52,11 +56,19 @@ namespace NewHorizons.Builder.Props
 
             if (info.computer != null)
             {
-                gravityCannonController._nomaiComputer = CreateComputer(planetGO, sector, info.computer);
+                gravityCannonController._nomaiComputer = CreateComputer(planetGO, sector, info.computer, mod);
             }
             else
             {
-                gravityCannonController._nomaiComputer = null;
+                gravityCannonController._nomaiComputer = CreateComputer(planetGO, sector, new NomaiGravityCannonComputerInfo
+                {
+                    position = new MVector3(-2.556838f, -0.8018004f, 10.01348f),
+                    rotation = new MVector3(8.293f, 2.403f, 0.9f),
+                    isRelativeToParent = true,
+                    rename = "Computer",
+                    xmlFile = "Assets/GravityCannonComputer.xml",
+                    parentPath = gravityCannonObject.transform.GetPath().Remove(0, planetGO.name.Length + 1)
+                }, Main.Instance);
             }
 
             gravityCannonObject.SetActive(true);
@@ -64,12 +76,25 @@ namespace NewHorizons.Builder.Props
             return gravityCannonObject;
         }
 
-        private static NomaiComputer CreateComputer(GameObject planetGO, Sector sector, GeneralPropInfo computerInfo)
+        private static NomaiComputer CreateComputer(GameObject planetGO, Sector sector, NomaiGravityCannonComputerInfo computerInfo, IModBehaviour mod)
         {
             var computerObject = DetailBuilder.Make(planetGO, sector, TranslatorTextBuilder.ComputerPrefab, new DetailInfo(computerInfo));
 
             var computer = computerObject.GetComponentInChildren<NomaiComputer>();
             computer.SetSector(sector);
+
+            var xmlContent = !string.IsNullOrEmpty(computerInfo.xmlFile) ? File.ReadAllText(Path.Combine(mod.ModHelper.Manifest.ModFolderPath, computerInfo.xmlFile)) : null;
+            if (xmlContent != null)
+            {
+                computer._dictNomaiTextData = TranslatorTextBuilder.MakeNomaiTextDict(xmlContent);
+                computer._nomaiTextAsset = new TextAsset(xmlContent);
+                computer._nomaiTextAsset.name = Path.GetFileNameWithoutExtension(computerInfo.xmlFile);
+                TranslatorTextBuilder.AddTranslation(xmlContent);
+            }
+            else
+            {
+                NHLogger.LogError($"Failed to create gravity cannon computer because {nameof(computerInfo.xmlFile)} was not set to a valid text .xml file path");
+            }
 
             Delay.FireOnNextUpdate(computer.ClearAllEntries);
 

@@ -6,14 +6,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace NewHorizons.Components
 {
     public class NHShuttleController : NomaiShuttleController
     {
-        public NomaiInterfaceSlot _neutralSlot;
-        public Sector _exteriorSector;
-        public Sector _interiorSector;
+        [FormerlySerializedAs("_neutralSlot")] public NomaiInterfaceSlot neutralSlot;
+        [FormerlySerializedAs("_exteriorSector")] public Sector exteriorSector;
+        [FormerlySerializedAs("_interiorSector")] public Sector interiorSector;
 
         public new void Awake()
         {
@@ -36,8 +37,8 @@ namespace NewHorizons.Components
                 GlobalMessenger.AddListener("PlayerEnterQuantumMoon", OnPlayerEnterQuantumMoon);
                 GlobalMessenger.AddListener("PlayerExitQuantumMoon", OnPlayerExitQuantumMoon);
             }
-            _neutralSlot.OnSlotActivated += OnNeutralSlotActivated;
-            _neutralSlot.OnSlotDeactivated += OnNeutralSlotDeactivated;
+            neutralSlot.OnSlotActivated += OnNeutralSlotActivated;
+            neutralSlot.OnSlotDeactivated += OnNeutralSlotDeactivated;
         }
 
         public new void Start()
@@ -80,8 +81,8 @@ namespace NewHorizons.Components
                 GlobalMessenger.RemoveListener("PlayerEnterQuantumMoon", OnPlayerEnterQuantumMoon);
                 GlobalMessenger.RemoveListener("PlayerExitQuantumMoon", OnPlayerExitQuantumMoon);
             }
-            _neutralSlot.OnSlotActivated -= OnNeutralSlotActivated;
-            _neutralSlot.OnSlotDeactivated -= OnNeutralSlotDeactivated;
+            neutralSlot.OnSlotActivated -= OnNeutralSlotActivated;
+            neutralSlot.OnSlotDeactivated -= OnNeutralSlotDeactivated;
         }
 
         public new void Retrieve()

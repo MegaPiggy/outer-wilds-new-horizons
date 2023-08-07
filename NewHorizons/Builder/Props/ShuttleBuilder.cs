@@ -20,8 +20,8 @@ namespace NewHorizons.Builder.Props
                 _prefab = SearchUtilities.Find("QuantumMoon_Body/Sector_QuantumMoon/QuantumShuttle/Prefab_NOM_Shuttle")?.InstantiateInactive()?.Rename("Prefab_QM_Shuttle")?.DontDestroyOnLoad();
                 NomaiShuttleController shuttleController = _prefab.GetComponent<NomaiShuttleController>();
                 NHShuttleController nhShuttleController = _prefab.AddComponent<NHShuttleController>();
-                nhShuttleController._exteriorSector = _prefab.FindChild("Sector_Shuttle").GetComponent<Sector>();
-                nhShuttleController._interiorSector = _prefab.FindChild("Sector_NomaiShuttleInterior").GetComponent<Sector>();
+                nhShuttleController.exteriorSector = _prefab.FindChild("Sector_Shuttle").GetComponent<Sector>();
+                nhShuttleController.interiorSector = _prefab.FindChild("Sector_NomaiShuttleInterior").GetComponent<Sector>();
                 nhShuttleController._shuttleBody = shuttleController._shuttleBody;
                 nhShuttleController._retrievalLength = shuttleController._retrievalLength;
                 nhShuttleController._launchSlot = shuttleController._launchSlot;
@@ -48,10 +48,10 @@ namespace NewHorizons.Builder.Props
                 neutralSlot._radius = 0.05f;
                 neutralSlot._attractive = true;
                 neutralSlot._muteAudio = true;
-                nhShuttleController._neutralSlot = neutralSlot;
+                nhShuttleController.neutralSlot = neutralSlot;
                 _orbPrefab = shuttleController._orb.gameObject?.InstantiateInactive()?.Rename("Prefab_QM_Shuttle_InterfaceOrbSmall")?.DontDestroyOnLoad();
                 nhShuttleController._orb = _orbPrefab.GetComponent<NomaiInterfaceOrb>();
-                nhShuttleController._orb._sector = nhShuttleController._interiorSector;
+                nhShuttleController._orb._sector = nhShuttleController.interiorSector;
                 nhShuttleController._orb._slotRoot = slots;
                 nhShuttleController._orb._safetyRails = slots.GetComponentsInChildren<OWRail>();
                 nhShuttleController._orb._slots = slots.GetComponentsInChildren<NomaiInterfaceSlot>();
@@ -82,22 +82,22 @@ namespace NewHorizons.Builder.Props
             shuttleController._id = id;
             shuttleController._cannon = Locator.GetGravityCannon(id);
 
-            StreamingHandler.SetUpStreaming(shuttleObject, shuttleController._exteriorSector);
-            StreamingHandler.SetUpStreaming(shuttleObject, shuttleController._interiorSector);
+            StreamingHandler.SetUpStreaming(shuttleObject, shuttleController.exteriorSector);
+            StreamingHandler.SetUpStreaming(shuttleObject, shuttleController.interiorSector);
 
             GameObject slots = shuttleObject.FindChild("Sector_NomaiShuttleInterior/Interactibles_NomaiShuttleInterior/ControlPanel/Slots");
             GameObject orbObject = _orbPrefab.InstantiateInactive().Rename("InterfaceOrbSmall");
             orbObject.transform.SetParent(slots.transform, false);
             orbObject.transform.localPosition = new Vector3(-0.0153f, -0.2386f, 0.0205f);
             shuttleController._orb = orbObject.GetComponent<NomaiInterfaceOrb>();
-            shuttleController._orb._sector = shuttleController._interiorSector;
+            shuttleController._orb._sector = shuttleController.interiorSector;
             shuttleController._orb._slotRoot = slots;
             shuttleController._orb._safetyRails = slots.GetComponentsInChildren<OWRail>();
             shuttleController._orb._slots = slots.GetComponentsInChildren<NomaiInterfaceSlot>();
 
             StreamingHandler.SetUpStreaming(orbObject, sector);
-            StreamingHandler.SetUpStreaming(orbObject, shuttleController._exteriorSector);
-            StreamingHandler.SetUpStreaming(orbObject, shuttleController._interiorSector);
+            StreamingHandler.SetUpStreaming(orbObject, shuttleController.exteriorSector);
+            StreamingHandler.SetUpStreaming(orbObject, shuttleController.interiorSector);
 
             GameObject bodyObject = _bodyPrefab.InstantiateInactive().Rename("Shuttle_Body");
             bodyObject.transform.SetParent(shuttleObject.transform, false);

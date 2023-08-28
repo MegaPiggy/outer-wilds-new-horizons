@@ -283,10 +283,6 @@ namespace NewHorizons
             SearchUtilities.ClearCache();
             ProxyHandler.ClearCache();
 
-            // Enum cache, if not cleared every time, breaks signals
-            // I don't know why, but it's probably the least expensive cache there is, so let's just clear it every time
-            EnumUtilities.ClearCache();
-
             // Caches of other assets only have to be cleared if we changed star systems
             if (CurrentStarSystem != _previousStarSystem)
             {
@@ -294,6 +290,7 @@ namespace NewHorizons
                 ImageUtilities.ClearCache();
                 AudioUtilities.ClearCache();
                 AssetBundleUtilities.ClearCache();
+                EnumUtilities.ClearCache();
             }
 
             IsSystemReady = false;

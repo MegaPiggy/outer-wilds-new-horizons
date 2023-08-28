@@ -81,12 +81,17 @@ namespace NewHorizons.Handlers
         // Create a custom audio type from a set of audio clips. Needs a unique ID
         public static AudioType AddCustomAudioType(string id, AudioClip[] audioClips)
         {
-            NHLogger.LogVerbose($"Registering new audio type [{id}]");
+            AudioType audioType;
 
-            var audioType = EnumUtilities.Create<AudioType>(id);
+            if (!EnumUtils.TryParse(id, out audioType))
+            {
+                NHLogger.LogVerbose($"Registering new audio type [{id}]");
 
-            _audioEntries.Add(new AudioLibrary.AudioEntry(audioType, audioClips));
-            _customAudioTypes.Add(id, audioType);
+                audioType = EnumUtilities.Create<AudioType>(id);
+
+                _audioEntries.Add(new AudioLibrary.AudioEntry(audioType, audioClips));
+                _customAudioTypes.Add(id, audioType);
+            }
 
             return audioType;
         }
